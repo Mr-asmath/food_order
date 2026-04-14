@@ -11,12 +11,29 @@ const Admin = require('./models/Admin');
 dotenv.config();
 
 const app = express();
-const corsOrigin = process.env.CORS_ORIGIN || '*';
+const normalizeOrigin = (origin) => {
+  const trimmedOrigin = origin.trim();
+
+  if (!trimmedOrigin || trimmedOrigin === '*') {
+    return trimmedOrigin;
+  }
+
+  if (/^https?:\/\//i.test(trimmedOrigin)) {
+    return trimmedOrigin;
+  }
+
+  return `https://${trimmedOrigin}`;
+};
+
+const corsOrigins = (process.env.CORS_ORIGIN || '*')
+  .split(',')
+  .map(normalizeOrigin)
+  .filter(Boolean);
 
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: corsOrigin === '*' ? true : corsOrigin.split(',').map((origin) => origin.trim()),
+  origin: corsOrigins.includes('*') ? true : corsOrigins,
 }));
 
 // Initialize database

@@ -221,6 +221,12 @@ Backend environment variables:
 Frontend environment variables:
 - `REACT_APP_API_URL`
 
+Current hosted values for this project:
+- Frontend URL: `https://food-order-alpha-five.vercel.app`
+- Backend URL: `https://food-order-mfol.onrender.com`
+- Frontend `REACT_APP_API_URL`: `https://food-order-mfol.onrender.com/api`
+- Backend `CORS_ORIGIN`: `https://food-order-alpha-five.vercel.app`
+
 ### Vercel frontend
 
 If you deploy the frontend to Vercel, set the project root to `frontend` and add:
