@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import EmployeeContext from '../context/EmployeeContext';
-import { foodService } from '../services/api';
+import { foodService, normalizeListResponse, API_BASE_URL } from '../services/api';
 import './EmployeeDashboard.css';
 
 function EmployeeDashboard() {
@@ -34,10 +34,13 @@ function EmployeeDashboard() {
   const fetchFoods = async () => {
     try {
       setLoading(true);
+      setError('');
       const response = await foodService.getAllFoods();
-      setFoods(response.data);
+      setFoods(normalizeListResponse(response));
     } catch (error) {
       console.error('Error fetching foods:', error);
+      setFoods([]);
+      setError(`Unable to load foods from ${API_BASE_URL}.`);
     } finally {
       setLoading(false);
     }

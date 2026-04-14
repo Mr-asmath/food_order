@@ -6,6 +6,21 @@ const api = axios.create({
   baseURL: API_BASE_URL,
 });
 
+const normalizeListResponse = (response) => {
+  const payload = response?.data;
+
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+
+  if (Array.isArray(payload?.data)) {
+    return payload.data;
+  }
+
+  console.error('Expected an array response but received:', payload);
+  return [];
+};
+
 // Foods
 export const foodService = {
   getAllFoods: () => api.get('/foods'),
@@ -56,5 +71,7 @@ export const adminService = {
   updateEmployee: (id, employeeData) => api.put(`/admins/employees/${id}`, employeeData),
   deleteEmployee: (id) => api.delete(`/admins/employees/${id}`),
 };
+
+export { normalizeListResponse, API_BASE_URL };
 
 export default api;

@@ -1,26 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import FoodCard from '../components/FoodCard';
-import { foodService } from '../services/api';
+import { foodService, normalizeListResponse, API_BASE_URL } from '../services/api';
 import './Home.css';
 
 function Home() {
   const [foods, setFoods] = useState([]);
   const [category, setCategory] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchFoods = async () => {
       try {
         setLoading(true);
+        setError('');
         let response;
         if (category === 'all') {
           response = await foodService.getAllFoods();
         } else {
           response = await foodService.getFoodsByCategory(category);
         }
-        setFoods(response.data);
+        setFoods(normalizeListResponse(response));
       } catch (error) {
         console.error('Error fetching foods:', error);
+        setFoods([]);
+        setError(`Unable to load foods from ${API_BASE_URL}.`);
       } finally {
         setLoading(false);
       }
@@ -54,6 +58,8 @@ function Home() {
 
         {loading ? (
           <p className="loading">Loading foods...</p>
+        ) : error ? (
+          <p className="no-foods">{error}</p>
         ) : foods && foods.length > 0 ? (
           <div className="foods-grid">
             {foods.map((food) => (
