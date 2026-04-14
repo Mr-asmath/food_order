@@ -168,6 +168,31 @@ npm start
 
 App will open on `http://localhost:3000`
 
+## Run With Docker
+
+You can run the full project with Docker and Docker Compose.
+
+### Prerequisites
+
+- Docker Desktop
+
+### Start the app
+
+```bash
+docker compose up --build
+```
+
+### Access the app
+
+- Frontend: `http://localhost:3000`
+- Backend API: `http://localhost:5000`
+
+### Stop the app
+
+```bash
+docker compose down
+```
+
 ## API Endpoints
 
 ### Food Routes

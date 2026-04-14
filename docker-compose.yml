@@ -1,0 +1,22 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: food-order-backend
+    environment:
+      PORT: 5000
+      JWT_SECRET: your_jwt_secret_key_here
+      NODE_ENV: production
+    volumes:
+      - ./backend/database.sqlite:/app/database.sqlite
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: food-order-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
