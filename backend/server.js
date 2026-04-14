@@ -7,6 +7,7 @@ const Food = require('./models/Food');
 const Order = require('./models/Order');
 const Employee = require('./models/Employee');
 const Admin = require('./models/Admin');
+const { register, metricsMiddleware } = require('./metrics');
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.use(express.json());
 app.use(cors({
   origin: corsOrigins.includes('*') ? true : corsOrigins,
 }));
+app.use(metricsMiddleware);
 
 // Initialize database
 sequelize.authenticate()
@@ -61,6 +63,15 @@ app.use('/api/admins', require('./routes/adminRoutes'));
 // Basic route
 app.get('/', (req, res) => {
   res.json({ message: 'Food Order App API (SQL Version)' });
+});
+
+app.get('/metrics', async (req, res) => {
+  try {
+    res.set('Content-Type', register.contentType);
+    res.end(await register.metrics());
+  } catch (err) {
+    res.status(500).end(err.message);
+  }
 });
 
 // Error handling middleware

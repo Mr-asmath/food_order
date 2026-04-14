@@ -20,3 +20,30 @@ services:
       - backend
     ports:
       - "3000:80"
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    container_name: food-order-prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - backend
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:11.1.5
+    container_name: food-order-grafana
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./monitoring/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards/json:ro
+    depends_on:
+      - prometheus
+    ports:
+      - "3001:3000"

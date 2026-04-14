@@ -186,12 +186,22 @@ docker compose up --build
 
 - Frontend: `http://localhost:3000`
 - Backend API: `http://localhost:5000`
+- Prometheus: `http://localhost:9090`
+- Grafana: `http://localhost:3001`
 
 ### Stop the app
 
 ```bash
 docker compose down
 ```
+
+### Grafana Login
+
+- URL: `http://localhost:3001`
+- Username: `admin`
+- Password: `admin`
+
+Grafana is preloaded with a `Food Order Overview` dashboard backed by Prometheus.
 
 ## Deploy
 
