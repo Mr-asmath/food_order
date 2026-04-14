@@ -11,10 +11,13 @@ const Admin = require('./models/Admin');
 dotenv.config();
 
 const app = express();
+const corsOrigin = process.env.CORS_ORIGIN || '*';
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: corsOrigin === '*' ? true : corsOrigin.split(',').map((origin) => origin.trim()),
+}));
 
 // Initialize database
 sequelize.authenticate()
@@ -51,6 +54,5 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
-

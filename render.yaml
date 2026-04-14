@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: food-order-backend
+    runtime: node
+    rootDir: backend
+    plan: starter
+    region: oregon
+    buildCommand: npm ci
+    startCommand: npm start
+    autoDeployTrigger: checksPass
+    healthCheckPath: /
+    disk:
+      name: sqlite-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        sync: false
+      - key: SQLITE_STORAGE_PATH
+        value: /var/data/database.sqlite
+
+  - type: web
+    name: food-order-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: build
+    autoDeployTrigger: checksPass
+    envVars:
+      - key: REACT_APP_API_URL
+        sync: false
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

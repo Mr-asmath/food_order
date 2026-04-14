@@ -193,6 +193,42 @@ docker compose up --build
 docker compose down
 ```
 
+## Deploy
+
+This repo is deployment-ready for a split frontend and backend setup.
+
+### Recommended hosting
+
+- Frontend: Vercel or Render Static Site
+- Backend: Render Web Service
+
+### Render
+
+This repo includes [render.yaml](d:\program\node js\food_order\render.yaml) for Render Blueprints.
+
+Backend notes:
+- Uses SQLite, so attach a persistent disk in Render
+- `SQLITE_STORAGE_PATH` is set to `/var/data/database.sqlite` in the blueprint
+
+Frontend notes:
+- Set `REACT_APP_API_URL` to your deployed backend API URL, for example `https://your-backend.onrender.com/api`
+
+Backend environment variables:
+- `JWT_SECRET`
+- `CORS_ORIGIN`
+- `SQLITE_STORAGE_PATH`
+
+Frontend environment variables:
+- `REACT_APP_API_URL`
+
+### Vercel frontend
+
+If you deploy the frontend to Vercel, set the project root to `frontend` and add:
+
+```bash
+REACT_APP_API_URL=https://your-backend-url/api
+```
+
 ## API Endpoints
 
 ### Food Routes

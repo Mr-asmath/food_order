@@ -45,7 +45,7 @@ function Orders() {
       console.error('Error creating order:', error);
       console.error('Status:', error.response?.status);
       console.error('Data:', error.response?.data);
-      console.error('Is backend running on http://localhost:5000?');
+      console.error('Check whether the backend API is reachable and the API base URL is configured correctly.');
     }
   }, [user]);
 
